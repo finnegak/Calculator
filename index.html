@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .btn {
+            height: 100px;
+            line-height: 80px;  
+            width: 100px;  
+            font-size: 2em;
+            font-weight: bold;
+            border-radius: 50%;
+            background-color:gainsboro;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid darkgray;
+        }
+        input{
+            width:97%;
+            height:100px;
+            font-size:30pt;
+        }
+        td{
+            text-align: center;
+        }
+        table{
+            border: 2px solid black;
+            margin-right:auto;
+            margin-left:auto;
+            padding:5px;
+            background-color:azure;
+        }
+    </style>
+    <script>
+        var text = "";
+        function button(x){
+            if (x == "C"){
+                text = ""
+            } else if(x == "="){
+                if (text[0] == "-"){
+                    text = text.slice(1);
+                    var array = splitText(text);
+                    var negative = parseFloat(array[0]) - (parseFloat(array[0])*2)
+                    var computed = computeNeg(negative, parseFloat(array[1]), text)
+                } else if (text.includes('--') || text.includes('+-') || text.includes('/-') || text.includes('x-')) {
+                    if (text.includes('--')) {
+                        text = text.replace('--', '+')
+                        var computed = compute(text);
+                    } else if (text.includes('+-')) {
+                        var array = text.split('+-');
+                        var negative = parseFloat(array[1]) - (parseFloat(array[1])*2)
+                        text = text.replace('+-', '+')
+                        var computed = computeNeg(parseFloat(array[0]), parseFloat(negative), text);  
+                    } else if (text.includes('/-')) {
+                        var array = text.split('/-');
+                        var negative = parseFloat(array[1]) - (parseFloat(array[1])*2)
+                        text = text.replace('/-', '/')
+                        var computed = computeNeg(parseFloat(array[0]), parseFloat(negative), text);  
+                    } else if (text.includes('x-')) {
+                        var array = text.split('x-');
+                        var negative = parseFloat(array[1]) - (parseFloat(array[1])*2)
+                        text = text.replace('x-', 'x')
+                        var computed = computeNeg(parseFloat(array[0]), parseFloat(negative), text);  
+                    }
+                } else {
+                    var computed = compute(text);
+                }
+                text = computed;
+            }else if (x == "+/-"){
+                text += "-"
+            } else if (x == "%"){
+                text = parseFloat(text)/100;
+            }else{
+                text += x;
+            }
+            document.getElementById('textB').value = text;
+        }
+
+        function compute(text){
+            if (text.includes('+')){
+                var array = text.split('+');
+                var computed = parseFloat(array[0]) + parseFloat(array[1]);
+            }
+            if (text.includes('-')){
+                var array = text.split('-');
+                var computed = parseFloat(array[0]) - parseFloat(array[1]);
+            }
+            if (text.includes('/')){
+                var array = text.split('/');
+                var computed = parseFloat(array[0]) / parseFloat(array[1]);
+            }
+            if (text.includes('x')){
+                var array = text.split('x');
+                var computed = parseFloat(array[0]) * parseFloat(array[1]);
+            }
+            if (text.includes('mod')){
+                var array = text.split('mod');
+                var computed = parseFloat(array[0]) % parseFloat(array[1]);
+            }
+            return computed;
+        }
+
+        function computeNeg(x, y, text){
+            if (text.includes('+')){
+                var computed = x + y;
+            }
+            if (text.includes('-')){
+                var computed = x - y ;
+            }
+            if (text.includes('/')){
+                var computed = x / y;
+            }
+            if (text.includes('x')){
+                var computed = x * y;
+            }
+            return computed;
+        }
+
+        function splitText(text){
+            if (text.includes('+')) {
+                var array = text.split('+');
+            }
+            if (text.includes('-')) {
+                var array = text.split('-');
+            }
+            if (text.includes('/')) {
+                var array = text.split('/');
+            }
+            if (text.includes('x')) {
+                var array = text.split('x');
+            }
+            return array;
+        }
+    </script>
+</head>
+<body>
+
+    <table>
+        <tr> 
+            <td colspan = 4>
+                <input type="text" id="textB">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="btn" onclick="button('C')">C</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('+/-')">+/-</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('%')">%</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('/')">/</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="btn" onclick="button('7')">7</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('8')">8</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('9')">9</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('x')">x</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="btn" onclick="button('4')">4</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('5')">5</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('6')">6</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('-')">-</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="btn" onclick="button('1')">1</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('2')">2</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('3')">3</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('+')">+</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="btn" onclick="button('0')">0</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('mod')">mod</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('.')">.</div>
+            </td>
+            <td>
+                <div class="btn" onclick="button('=')">=</div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
